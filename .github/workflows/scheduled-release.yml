@@ -1,0 +1,23 @@
+name: Weekly Scheduled Release
+
+on:
+  schedule:
+    - cron: "0 9 * * 5" # Runs every Friday at 09:00 UTC
+  workflow_dispatch: # Optional manual trigger
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create weekly release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "weekly-release-$(date +'%Y-%m-%d')"
+          name: "Weekly Release - $(date +'%Y-%m-%d')"
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
